@@ -1,0 +1,21 @@
+name: Comparar Tokens de Desarrollo
+
+on: [push]
+
+jobs:
+  comparar-tokens:
+    runs-on: self-hosted
+    steps:
+      - name: Comparar DEV_TOKEN y LOCAL_DEV_TOKEN
+        shell: pwsh
+        env:
+          SECRET_DEV_TOKEN: ${{ secrets.DEV_TOKEN }}
+        run: |
+          $localToken = $env:LOCAL_DEV_TOKEN
+          $secretToken = $env:SECRET_DEV_TOKEN
+
+          if ($secretToken -eq $localToken) {
+              Write-Output "¡LOS TOKENS COINCIDEN CORRECTAMENTE!"
+          } else {
+              Write-Output "LOS TOKENS NO COINCIDEN."
+          }
