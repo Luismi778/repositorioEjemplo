@@ -1,0 +1,20 @@
+name: Continuous Deployment (CD)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Despliegue en entorno
+        shell: powershell
+        run: |
+          Write-Output "Iniciando proceso de Despliegue Continuo (CD)..."
+          Write-Output "Desplegando la aplicación en el servidor objetivo..."
+          Write-Output "¡Despliegue completado con éxito!"

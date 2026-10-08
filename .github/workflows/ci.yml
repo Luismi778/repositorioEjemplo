@@ -1,0 +1,30 @@
+name: Continuous Integration (CI)
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Ejecutar pruebas e integración
+        shell: powershell
+        run: |
+          Write-Output "Iniciando proceso de Integración Continua (CI)..."
+          $localToken = $env:LOCAL_DEV_TOKEN
+          $secretToken = "${{ secrets.DEV_TOKEN }}"
+
+          if ($secretToken -eq $localToken) {
+              Write-Output "CI completado con éxito: Los tokens coinciden."
+          } else {
+              Write-Output "Error en CI: Los tokens no coinciden."
+              exit 1
+          }
