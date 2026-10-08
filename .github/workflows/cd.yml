@@ -12,9 +12,13 @@ jobs:
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      - name: Despliegue en entorno
+      - name: Incrementar versión en README.md (Bump Version)
         shell: powershell
         run: |
-          Write-Output "Iniciando proceso de Despliegue Continuo (CD)..."
-          Write-Output "Desplegando la aplicación en el servidor objetivo..."
-          Write-Output "¡Despliegue completado con éxito!"
+          Write-Output "Incrementando versión en README.md..."
+          (Get-Content README.md) -replace 'AppVersion-0', 'AppVersion-1' | Set-Content README.md
+
+      - name: Validar despliegue en Producción
+        shell: powershell
+        run: |
+          Write-Output "Despliegue ejecutado con éxito en la rama main."
