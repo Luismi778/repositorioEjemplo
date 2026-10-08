@@ -9,16 +9,29 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  update-readme:
     runs-on: self-hosted
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      - name: Ejecutar pruebas e integración
+      - name: Añadir línea de la nueva feature al README
         shell: powershell
         run: |
-          Write-Output "Iniciando proceso de Integración Continua (CI)..."
+          Write-Output "Actualizando README.md en update-readme..."
+          Add-Content -Path "README.md" -Value "Nueva feature añadida correctamente"
+
+  validate-dev:
+    needs: update-readme
+    runs-on: self-hosted
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Validar Tokens
+        shell: powershell
+        run: |
+          Write-Output "Iniciando validación de tokens en validate-dev..."
           $localToken = $env:LOCAL_DEV_TOKEN
           $secretToken = "${{ secrets.DEV_TOKEN }}"
 
