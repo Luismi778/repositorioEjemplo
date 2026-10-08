@@ -1,0 +1,43 @@
+name: Continuous Integration (CI)
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  update-readme:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Añadir línea de la nueva feature al README
+        shell: powershell
+        run: |
+          Write-Output "Actualizando README.md en update-readme..."
+          Add-Content -Path "README.md" -Value "Nueva feature añadida correctamente"
+
+  validate-dev:
+    needs: update-readme
+    runs-on: self-hosted
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Validar Tokens
+        shell: powershell
+        run: |
+          Write-Output "Iniciando validación de tokens en validate-dev..."
+          $localToken = $env:LOCAL_DEV_TOKEN
+          $secretToken = "${{ secrets.DEV_TOKEN }}"
+
+          if ($secretToken -eq $localToken) {
+              Write-Output "CI completado con éxito: Los tokens coinciden."
+          } else {
+              Write-Output "Error en CI: Los tokens no coinciden."
+              exit 1
+          }
